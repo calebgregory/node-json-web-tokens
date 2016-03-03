@@ -25,14 +25,6 @@ router.get('/setup', (req, res) => {
 
 const api = Router()
 
-api.get('/', (req, res) => res.json({ message: `! (>'')> CONNECTED to API!` }))
-
-api.get('/users', (req, res) => {
-  const User = req.app.get('User')
-
-  User.find({}, (err, users) => res.json(users))
-})
-
 api.post('/auth', (req, res) => {
   const User = req.app.get('User')
 
@@ -58,6 +50,28 @@ api.post('/auth', (req, res) => {
       }
     }
   })
+})
+
+api.use((req, res, next) => { // middleware for verifying token
+  const token = req.body['token'] || req.query['token'] || req.headers['x-access-token']
+
+  if (token) {
+    jwt.verify(token, req.app.get('superSecret'), (err, decoded) => {
+      if (err) return res.json({ success: false, message: 'Failed to authenticate token.' })
+      req.decoded = decoded
+      next()
+    })
+  } else {
+    return res.status(403).send({ success: false, message: 'No token provided.' })
+  }
+})
+
+api.get('/', (req, res) => res.json({ message: `! (>'')> CONNECTED to API!` }))
+
+api.get('/users', (req, res) => {
+  const User = req.app.get('User')
+
+  User.find({}, (err, users) => res.json(users))
 })
 
 router.use('/api', api)
