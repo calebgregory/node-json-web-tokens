@@ -23,4 +23,8 @@ app.use(morgan('dev'))
 
 app.get('/', (req, res) => res.send(`! (>'')> API is at http://localhost:${app.get('port')}/api`))
 
-app.listen(app.get('port'))
+const server = app.listen(app.get('port'),
+  (err) => err ?
+    console.error(`FAILURE TO LISTEN: ${err}`) :
+    console.log(`! (>'')> LISTENING on http://localhost:${server.address().port}`)
+)
