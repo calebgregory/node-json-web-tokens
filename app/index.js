@@ -5,7 +5,6 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const mongoose = require('mongoose')
-const jwt = require('jsonwebtoken')
 
 const config = require('../config')
 const User = require('./models/user')
