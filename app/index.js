@@ -13,8 +13,10 @@ const User = require('./models/user')
 const app = express()
 
 app.set('port', config.PORT)
-mongoose.connect(config.database)
+app.set('User', User)
 app.set('superSecret', config.secret)
+
+mongoose.connect(config.database)
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
