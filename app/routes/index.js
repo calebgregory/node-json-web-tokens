@@ -36,8 +36,6 @@ api.get('/users', (req, res) => {
 api.post('/auth', (req, res) => {
   const User = req.app.get('User')
 
-  console.log(req.body)
-
   User.findOne({
     name: req.body.name
   }, (err, user) => {
@@ -49,7 +47,7 @@ api.post('/auth', (req, res) => {
         return res.json({ success: false, message: 'Authentication failed. Wrong password.' })
       } else {
         const token = jwt.sign(user, req.app.get('superSecret'), {
-          expiresInMinutes: 1440 // 24 hr
+          expiresIn: 1440 // 24 hr
         })
 
         return res.json({
