@@ -21,7 +21,7 @@ app.use(bodyParser.json())
 
 app.use(morgan('dev'))
 
-app.get('/', (req, res) => res.send(`! (>'')> API is at http://localhost:${app.get('port')}/api`))
+app.use(require('./routes'))
 
 const server = app.listen(app.get('port'),
   (err) => err ?
